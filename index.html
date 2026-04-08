@@ -1,1 +1,219 @@
-hi
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS184 Final Project Proposal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>CS184: Project Proposal</h1>
+    <p class="website-link">Website link: <a href="#">[TBD]</a></p>
+
+    <section>
+      <h2>1. Title, Summary and Team Members</h2>
+      <p>
+        We propose to build an interactive smoke simulation system that allows smoke to form letters,
+        logos, or simple shapes while reacting to user-controlled wind disturbances. Our baseline goal
+        is a 2D smoke simulator in which particles or density fields can be guided into a target shape,
+        then pushed away by external forces such as a virtual fan controlled by the mouse, and finally
+        return toward their original formation over time. Our larger goal is to compare this system in both
+        2D and 3D, studying the visual quality, realism, and computational cost of each approach.
+      </p>
+      <p>Team members:</p>
+      <ul>
+        <li>Jessie Liu — rendering &amp; visualization</li>
+        <li>Nada Hameed — shape control &amp; target formation</li>
+        <li>Sarthak Agrawal — fluid simulation core</li>
+        <li>Luca Herden — interaction, integration &amp; 3D extension</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Problem Description</h2>
+      <p>
+        We are aiming to find a way to simulate smoke so it forms specific shapes, reacts to interaction,
+        and still behaves naturally. Simulating smoke is challenging because even simple-looking
+        motion depends on many interacting components, including velocity fields, pressure projection
+        (a method for solving the Navier-Stokes equations), external forces, boundary conditions, and
+        density transport. Our project introduces another challenge: instead of only letting smoke drift
+        naturally, we want it to form recognizable shapes such as letters or logos, and then recover
+        those shapes after external perturbations.
+      </p>
+      <p>
+        This problem is interesting because it tasks us with trying to balance realism and controllability.
+        If the restoring force is too strong, the smoke may look artificial. If it is too weak, the smoke may
+        lose the intended shape too easily. We also want to investigate how the design changes when
+        moving from 2D to 3D, since 3D smoke is more realistic but significantly more expensive and
+        difficult to simulate and render.
+      </p>
+      <p>
+        Our current plan is to begin with a grid-based 2D smoke simulation using common fluid
+        simulation steps such as advection, force application, diffusion or viscosity approximation, and
+        pressure projection for incompressibility. We'll also add a target-shape control mechanism that
+        encourages smoke density or particles to form letters or logos. We will then build interactive
+        controls such as mouse-driven wind, which acts like a fan that perturbs the smoke. If time
+        permits, we will extend the same ideas to a 3D simulation and compare the results to the 2D version.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Goals and Deliverables</h2>
+
+      <h3>What we plan to deliver</h3>
+      <p>Our baseline deliverable is an interactive 2D smoke simulator that can form shapes. The simulator will support:</p>
+      <ul>
+        <li>Smoke motion in 2D</li>
+        <li>User interaction through mouse-controlled wind or localized forces</li>
+        <li>Smoke forming a target letter or shape</li>
+        <li>Recovery behavior, where smoke gradually returns toward its shape after being disturbed (by user action)</li>
+      </ul>
+      <p>
+        We will create a demo where the smoke will form several different target shapes. Since our
+        project will be interactive, we will create a GUI that allows the user to interact with the smoke.
+      </p>
+      <p>
+        To measure the quality of the system, we will record what the smoke looks like before, during,
+        and after interaction for a qualitative assessment via side-by-side screenshots and a short
+        recorded demo video. We will compare how accurate the smoke is to its shape, and how closely
+        it matches the shape (what fraction of the smoke overlaps with the actual shape). We will check
+        to see if the smoke avoids the cursor correctly. We will also check how fast the smoke converges.
+      </p>
+      <p>Questions we plan to answer:</p>
+      <ul>
+        <li>How can we make smoke form recognizable letters or shapes without losing natural fluid motion?</li>
+        <li>How quickly and accurately can the system recover after wind disturbances?</li>
+        <li>How much user interaction can we support while still maintaining a stable and visually convincing simulation?</li>
+      </ul>
+
+      <h3>What we hope to deliver</h3>
+      <p>Our goal is to extend the 2D smoke simulator to support this additional functionality:</p>
+      <ul>
+        <li>A 3D smoke simulation with volumetric rendering or slice-based visualization</li>
+        <li>Temperature-dependent effects such as buoyancy, where we compare hot vs cold smoke and how they rise differently</li>
+        <li>A fire or fire-to-smoke extension</li>
+        <li>More advanced target formation, such as animated transitions between different letters or shapes, or more complex shapes</li>
+        <li>More complex disturbance tools, such as obstacle interaction</li>
+        <li>A side-by-side display comparing 2D and 3D simulation resolution, speed, and visual fidelity</li>
+      </ul>
+      <p>
+        We aim to extend our 2D smoke simulator to 3D, while adding additional features to the smoke,
+        the smoke disruption, and the surroundings (i.e. adding fire or other objects). Depending on how
+        much time we have, we will implement one or several of these extensions.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Schedule</h2>
+
+      <div class="week">
+        <h3>Week 1</h3>
+        <p>
+          We will finalize the project scope and divide responsibilities between 2D simulation,
+          rendering/interaction, target-shape control, and research for 3D extension. During this week, we
+          will also review references on stable fluid simulation and shape control, choose our
+          implementation framework, and create a minimal prototype of the simulation grid and visualization.
+        </p>
+        <p>Planned tasks:</p>
+        <ul>
+          <li>Read background material on smoke simulation and stable fluids</li>
+          <li>Decide on numerical representation, likely grid-based velocity and density fields</li>
+          <li>Implement a minimal 2D smoke prototype</li>
+          <li>Set up repository, webpage template, and task ownership</li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <h3>Week 2</h3>
+        <p>
+          We will complete the core 2D simulation pipeline. This includes advection, external forces, and
+          pressure projection, along with basic visualization of density. We will also add mouse interaction
+          so the user can perturb the smoke with fan-like wind input.
+        </p>
+        <p>Planned tasks:</p>
+        <ul>
+          <li>Finish stable 2D smoke update loop</li>
+          <li>Add interactive force input from mouse</li>
+          <li>Tune parameters for visually smooth smoke motion</li>
+          <li>Test performance and stability at different resolutions</li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <h3>Week 3</h3>
+        <p>
+          We will implement the target-shape formation system. This may involve initializing density in
+          letter-shaped masks and/or applying restoring forces or guidance toward target regions. We will
+          evaluate how well the smoke returns after disturbance and improve the rendering quality.
+        </p>
+        <p>Planned tasks:</p>
+        <ul>
+          <li>Generate masks for letters, logos, or simple shapes</li>
+          <li>Implement return-to-shape control</li>
+          <li>Test multiple targets and perturbation strengths</li>
+          <li>Measure recovery behavior and visual quality</li>
+          <li>Begin organizing intermediate results and comparison images</li>
+        </ul>
+      </div>
+
+      <div class="week">
+        <h3>Week 4</h3>
+        <p>
+          We will focus on either the 3D extension or a strong comparison study, depending on progress.
+          If the 3D implementation proves too expensive, we will instead make the 2D system more
+          polished and produce a detailed analysis of what is required for 3D. If progress is strong, we will
+          implement a small-scale 3D smoke prototype and compare it directly to the 2D version.
+        </p>
+        <p>Planned tasks:</p>
+        <ul>
+          <li>Prototype or finalize 3D extension</li>
+          <li>Compare 2D and 3D visually and computationally</li>
+          <li>Record demo video and collect final screenshots</li>
+          <li>Write up results, limitations, and lessons learned</li>
+          <li>Finalize presentation and report</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Resources</h2>
+      <p>
+        We expect to use course material on simulation and graphics programming, as well as online
+        resources and papers related to fluid simulation. In particular, we plan to study stable fluid
+        methods for smoke simulation and references on interactive fluid control. We may also look at
+        prior CS184 smoke and water simulation projects for guidance on scope and presentation.
+      </p>
+      <p>Potential resources include:</p>
+      <ul>
+        <li>
+          CS 184: Projects: <a href="https://charlesjsun.github.io/cs184-smoke-simulator/final.html" target="_blank">Smoke Simulation on the Surface of 3D Manifolds</a>
+          by Kevin Zhang, Charles Sun, Catherine Cang, and Alex Kassil
+        </li>
+        <li>
+          Stanford paper: <a href="https://web.stanford.edu/class/cs237d/smoke.pdf" target="_blank">Visual Simulation of Smoke</a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/watch?v=Q78wvrQ9xsU" target="_blank">Coding Adventure: Simulating Smoke</a>
+        </li>
+        <li>
+          Jos Stam, "Real-Time Fluid Dynamics for Games" (GDC 2003) —
+          <a href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/GDC03.pdf" target="_blank">PDF</a>
+        </li>
+        <li>
+          Jos Stam, "Stable Fluids" (SIGGRAPH 1999) —
+          <a href="https://www.dgp.toronto.edu/public_user/stam/reality/Research/pdf/ns.pdf" target="_blank">PDF</a>
+        </li>
+      </ul>
+      <p>
+        We expect to implement the project in C++ for performance and graphics integration, likely
+        using OpenGL for visualization. If needed, we may also use Python or small preprocessing
+        scripts for generating target masks from text or images. Development will be done on our
+        personal laptops/desktops, and we may experiment with GPU acceleration if time allows. We
+        are not currently planning to build directly on top of a large existing smoke simulation codebase,
+        but we may consult reference implementations for numerical guidance.
+      </p>
+    </section>
+  </div>
+</body>
+</html>
