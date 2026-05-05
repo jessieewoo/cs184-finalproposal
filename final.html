@@ -8,16 +8,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default"></script>
   </head>
   <body>
-    <nav>
+    <!-- <nav>
       <a class="nav-brand" href="index.html">CS184 Smoke Simulator</a>
       <a href="index.html">Home</a>
       <a href="proposal.html">Proposal</a>
       <a href="milestone.html">Milestone</a>
       <a href="final.html" class="active">Final</a>
-    </nav>
+    </nav> -->
 
     <div class="container">
-      <h1>Final Report</h1>
+      <h1>Stable Fluids Smoke Simulator</h1>
+      <p
+        style="
+          text-align: center;
+          font-size: 1.1rem;
+          color: #555;
+          margin-top: 4px;
+          margin-bottom: 16px;
+        "
+      >
+        Final Report
+      </p>
 
       <p class="subtitle">
         CS184 Final Project &mdash; Spring 2026<br />
@@ -26,29 +37,33 @@
       </p>
 
       <p class="links">
+        <br/>
         Video:
         <a
           href="https://drive.google.com/file/d/1SA2h4UCMcbjB5LyYwnWHqJYTxAIIv4Vz/view?usp=sharing"
           target="_blank"
-          >Demo</a
+          >https://drive.google.com/file/d/1SA2h4UCMcbjB5LyYwnWHqJYTxAIIv4Vz/view?usp=sharing</a
         >
-        &nbsp;&nbsp;|&nbsp;&nbsp; Presentation:
+        <br/>
+        Presentation:
         <a
           href="https://docs.google.com/presentation/d/13d6EYvRzoLtPv6RwKcuuq3AmLcziBxVNmUpVpzXi6uA/edit?usp=sharing"
           target="_blank"
-          >Google Slides</a
+          >https://docs.google.com/presentation/d/13d6EYvRzoLtPv6RwKcuuq3AmLcziBxVNmUpVpzXi6uA/edit?usp=sharing</a
         >
-        &nbsp;&nbsp;|&nbsp;&nbsp; Code GitHub:
+        <br/>
+       Code:
         <a
           href="https://github.com/jessieewoo/184-final-project"
           target="_blank"
-          >github.com/184-final-project</a
+          >https://github.com/jessieewoo/184-final-project</a
         >
-        Code GitHub:
+        <br/>
+        Website:
         <a
           href="https://github.com/jessieewoo/cs184-final-website"
           target="_blank"
-          >github.com/cs184-final-website</a
+          >https://github.com/jessieewoo/cs184-final-website</a
         >
       </p>
 
@@ -90,6 +105,37 @@
           with a FluidGrid class, and replaced clothSimulator.cpp/h with
           smokeSimulator.cpp/h. There, we implemented our full rendering
           functionality, where FluidGrid was our solver.
+        </p>
+
+        <h3>How Our Approach Varies from the References</h3>
+        <p>
+          Stam's Stable Fluids paper describes the core advect–diffuse–project
+          loop for a 2D velocity and density field. We implemented this loop
+          faithfully, but added several layers on top that the paper does not
+          cover: a LetterMask emitter system that maps smoke sources to
+          arbitrary cell patterns derived from typed text or imported images, a
+          buoyancy force, mouse-driven velocity injection, colored smoke, and a
+          live GUI for all parameters. These are original additions built around
+          the solver.
+        </p>
+        <p>
+          GPU Gems 3, Chapter 30 describes a fully GPU-resident fluid solver
+          where advection, diffusion, and projection all run in shaders. We
+          implemented a subset of this: our stable-fluids solver runs on the
+          CPU, while the GPU is only used for rendering (a fullscreen quad in 2D
+          and a ray-marched volume in 3D). This is a deliberate tradeoff —
+          keeping the solver on the CPU made it far easier to debug and iterate,
+          at the cost of performance on large grids.
+        </p>
+        <p>
+          Our analytic 3D mode is entirely our own design and does not appear in
+          either reference. Rather than solving Navier-Stokes on a 3D grid, we
+          evaluate a closed-form wind field (sine/cosine of position and time
+          plus a buoyancy term) and use it to advect the density each frame.
+          This was motivated by the computational cost of full 3D fluid solving
+          on a personal laptop — the analytic mode gives believable swirling
+          motion at a fraction of the cost and serves as a direct comparison
+          point for the physically-simulated version.
         </p>
 
         <h3>2D</h3>
@@ -391,6 +437,99 @@
             simulation realistic
           </li>
         </ul>
+      </section>
+      <section>
+        <h2>Rubric Checklist</h2>
+
+        <h3>Does the report include the project name at the top?</h3>
+        <p>
+          Yes. The project name "Stable Fluids Smoke Simulator" appears as the
+          page heading.
+        </p>
+
+        <h3>Is there a paragraph abstract summarizing the entire project?</h3>
+        <p>
+          Yes. See the <strong>Abstract</strong> section above. It covers the
+          simulator's scope (2D and 3D), input modes, GUI controls, and the
+          distinction between the two 3D rendering approaches.
+        </p>
+
+        <h3>
+          Is there a technical approach section covering algorithms and
+          techniques?
+        </h3>
+        <p>
+          Yes. See <strong>Technical Approach</strong> above. It covers the
+          Stable Fluids solver (advection, diffusion, pressure projection), the
+          LetterMask emitter system, the analytic 3D wind field, ray-marched
+          volume rendering for 3D, and the runtime tradeoffs between all three
+          modes.
+        </p>
+
+        <h3>
+          Does the report cite references and explain how the approach varies
+          from them?
+        </h3>
+        <p>
+          Yes. We reference Stam's Stable Fluids paper and GPU Gems 3, Chapter
+          30. The
+          <strong>How Our Approach Varies from the References</strong>
+          subsection describes what we implemented as a subset (CPU-side solver
+          rather than fully GPU-resident), what we added beyond the references
+          (LetterMask, GUI, mouse wind, colored smoke, buoyancy), and what is
+          entirely our own design (the analytic 3D mode).
+        </p>
+
+        <h3>
+          Does the report describe problems encountered and how they were
+          resolved?
+        </h3>
+        <p>
+          Yes. See <strong>Problems Encountered</strong> above. We cover the
+          Retina pixel-ratio mouse coordinate bug and its fix, the unresolved 3D
+          cursor interaction, and the performance constraints of 3D fluid on a
+          personal laptop.
+        </p>
+
+        <h3>Does the report include lessons learned?</h3>
+        <p>
+          Yes. See <strong>Lessons Learned</strong> above. Key takeaways include
+          coordinate system alignment across simulation/rendering/input, the
+          difficulty gap between 2D and 3D debugging, parameter sensitivity of
+          stable fluids, and the distinction between visual quality and physical
+          correctness.
+        </p>
+
+        <h3>
+          Does the report include final results — images, animations, or video?
+        </h3>
+        <p>
+          Yes. A short demo video is embedded at the top of the page. The
+          <strong>Results</strong> section shows side-by-side comparisons across
+          all three rendering modes (2D, 3D analytic, 3D fluid) for four input
+          types: hardcoded bars, typed text, a flower shape, and an imported owl
+          photo.
+        </p>
+
+        <h3>Are references listed?</h3>
+        <p>
+          Yes. See <strong>References</strong> above: Stam's Stable Fluids paper
+          and GPU Gems 3, Chapter 30.
+        </p>
+
+        <h3>Are individual contributions clearly described?</h3>
+        <p>
+          Yes. See <strong>Contributions</strong> above with per-member
+          breakdowns for Jessie, Luca, Nada, and Sarthak.
+        </p>
+
+        <h3>
+          Is a clip or animation of the output included for the final showcase?
+        </h3>
+        <p>
+          Yes. A video clip is embedded at the top of this page and also linked
+          via the Demo link above.
+        </p>
       </section>
     </div>
   </body>
